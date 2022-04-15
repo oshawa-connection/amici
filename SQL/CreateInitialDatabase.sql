@@ -8,6 +8,7 @@ CREATE SCHEMA main;
 DROP TABLE IF EXISTS main.amici_user;
 CREATE TABLE main.amici_user (
     id UUID PRIMARY KEY NOT NULL DEFAULT uuid_generate_v4(),
+    user_name VARCHAR,
     geom GEOMETRY("POINT",3857) NOT NULL
 );
 CREATE INDEX amici_user_geom ON main.amici_user USING GIST(geom);
@@ -42,5 +43,5 @@ CREATE TABLE main.amici_user_interests_through (
     FOREIGN KEY (amici_user_id) REFERENCES main.amici_user(id),
     FOREIGN KEY (interest_id) REFERENCES main.interest(id)
 );
-CREATE INDEX amici_amici_user_interests_through_amici_user_id ON main.friend USING BTREE(amici_user_id);
-CREATE INDEX amici_amici_user_interests_through_interest_id ON main.friend USING BTREE(interest_id);
+CREATE INDEX amici_amici_user_interests_through_amici_user_id ON main.amici_user_interests_through USING BTREE(amici_user_id);
+CREATE INDEX amici_amici_user_interests_through_interest_id ON main.amici_user_interests_through USING BTREE(interest_id);
