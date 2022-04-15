@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using System;
+using Amici.Services.Repositories;
 using System.Threading.Tasks;
 
 namespace Amici.Controllers
@@ -9,10 +10,17 @@ namespace Amici.Controllers
     [Route("api/[controller]")]
     public class UserController : ControllerBase
     {
-        [HttpGet("index")]
+        private readonly IUserRepository userRepository;
+        public UserController(IUserRepository userRepository)
+        {
+            this.userRepository=  userRepository;
+        }
+        [HttpGet]
         public async Task<IActionResult> GetUsers()
         {
-            return new JsonResult("");
+            // Hardcoded user ID here because no identity framework
+            var user = await this.userRepository.GetValueByID(Guid.Parse("0b2d143f-3ba6-45ea-b095-d1e7e4ab3175"));
+            return new JsonResult(user.ToDTO());
         }
     }    
 }

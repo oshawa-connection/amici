@@ -6,6 +6,7 @@ using Amici.HealthChecks;
 using Amici.Exceptions;
 using Amici.Interfaces.Services;
 using Amici.Services.Configuration;
+using Amici.Services.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -32,7 +33,7 @@ namespace Amici
             // This class might seem like a bit strange/ overkill, 
             // but in cases where we use Azure keyvault or 
             // Amazon secrets manager etc we'd be doing a lot of work to fetch the secret password
-            // in the Configure methods dependendent on environment.
+            // in the Configure methods, dependent on environment.
             ISecretConfiguration secretConfig;
             if (this.CurrentEnvironment.IsDevelopment())
             {
@@ -44,6 +45,9 @@ namespace Amici
             }
             // Although only the database password is secret, it is easy to build
             // the whole connection string in the service.
+            // Secondly, here and everywhere I inject, I am depending on the NpgsqlConnection concrete type. 
+            // There are good reasons for doing this!
+            services.AddScoped<IUserRepository,UserRepository>();
             services.AddTransient((provider) => new NpgsqlConnection(secretConfig.GetDatabaseConnectionString()));
             services.AddRazorPages().AddRazorRuntimeCompilation();
             services

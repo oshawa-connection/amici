@@ -3,6 +3,7 @@ using NetTopologySuite.Geometries;
 using Amici.Constants;
 using NetTopologySuite.Features;
 using Amici.Interfaces;
+using Amici.DataTranferObjects.Amici;
 
 namespace Amici.DatabaseTypes.Amici 
 {
@@ -19,6 +20,11 @@ namespace Amici.DatabaseTypes.Amici
                 int rInt = r.Next(1, AmiciConstants.NumberOfAvatars);
                 return rInt.ToString();
             }
+        }
+
+        public AmiciUserDTO ToDTO()
+        {
+            return new AmiciUserDTO() {Id=this.Id,UserName=this.UserName,AvatarURI=this.AvatarURI};
         }
 
         public Feature ToFeature()

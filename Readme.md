@@ -2,6 +2,13 @@
 
 Like Tinder, but for finding friends with similar interests!
 
+## What is this app built with?
+
+Dotnet core v3.1 - Because it is LTS and I haven't gotten around to learning v6.
+NO entity framework - because it's mappings don't support a lot of spatial stuff.
+NO identity framework - because I didn't have time.
+POSTGIS - For its amazing Geospatial data support.
+
 ## Security
 
 This is a demo app, I didn't use identity framework so there is no authentication/ authorisation.
