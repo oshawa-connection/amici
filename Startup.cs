@@ -2,13 +2,14 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Amici.HealthChecks;
 using Amici.Exceptions;
 using Amici.Interfaces.Services;
 using Amici.Services.Configuration;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Npgsql;
@@ -45,6 +46,9 @@ namespace Amici
             // the whole connection string in the service.
             services.AddTransient((provider) => new NpgsqlConnection(secretConfig.GetDatabaseConnectionString()));
             services.AddRazorPages().AddRazorRuntimeCompilation();
+            services
+                .AddHealthChecks()
+                .AddCheck<AmiciDatabaseHealthCheck>("Database Connection",failureStatus:HealthStatus.Unhealthy, tags: new [] {"Database"});
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -70,6 +74,7 @@ namespace Amici
 
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapHealthChecks("/healthcheck");
                 endpoints.MapControllers();
                 endpoints.MapRazorPages();
             });

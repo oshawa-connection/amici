@@ -1,22 +1,30 @@
 using Amici.Exceptions;
 using Amici.Interfaces.Services;
 using Microsoft.Extensions.Configuration;
+using Npgsql;
 
 namespace Amici.Services.Configuration 
 {
     public class DevelopmentSecretConfiguration : ISecretConfiguration
     {
-        private const string AmiciDatabaseConnectionStringEnvVarNameKey = "AmiciDatabaseConnectionStringEnvVarName";
         private readonly IConfiguration Configuration;
         public string GetDatabaseConnectionString()
         {
-            var connectionStringKeyName = this.Configuration["AmiciDatabaseConnectionStringEnvVarName"];
-            var connectionString = this.Configuration[connectionStringKeyName];
-            if (connectionString == null)
+            NpgsqlConnectionStringBuilder builder = new NpgsqlConnectionStringBuilder();
+            var environmentPassword = Configuration["AMICI_DB_PASSWORD"];
+            var environmentUsername = Configuration["AMICI_DB_USERNAME"];
+            
+            if (string.IsNullOrEmpty(environmentPassword) || string.IsNullOrEmpty(environmentUsername))
             {
-                throw new ConfigurationException($"{connectionStringKeyName} was not set");
+                throw new ConfigurationException("Database environment variables not set");
             }
-            return connectionString;
+
+            builder.Host = "localhost";
+            builder.Database = "amici";
+            builder.Username = environmentUsername;
+            builder.Password = environmentPassword;
+            
+            return builder.ConnectionString;
         }
         public DevelopmentSecretConfiguration(IConfiguration config)
         {

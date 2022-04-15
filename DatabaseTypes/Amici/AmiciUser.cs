@@ -30,6 +30,5 @@ namespace Amici.DatabaseTypes.Amici
             feature.Geometry = this.Geometry;
             return feature;
         }
-
     }
 }
