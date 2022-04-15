@@ -6,7 +6,7 @@ const DEVELOPMENT = "development";
 const areWeInProduction = process.env.NODE_ENV == PRODUCTION;
 
 module.exports = {
-  entry: './javascript/index.js',
+  entry: './Javascript/index.js',
   mode: areWeInProduction === true ? PRODUCTION : DEVELOPMENT,
   output: {
     filename: 'site.js',
