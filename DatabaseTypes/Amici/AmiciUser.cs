@@ -4,7 +4,8 @@ using Amici.Constants;
 using NetTopologySuite.Features;
 using Amici.Interfaces;
 
-namespace Amici.DatabaseTypes.Amici {
+namespace Amici.DatabaseTypes.Amici 
+{
     public class AmiciUser : IToFeatureable
     {
         public Guid Id {get;set;}

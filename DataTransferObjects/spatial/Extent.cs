@@ -1,4 +1,5 @@
-namespace Amici.DataTranferObjects.Spatial {
+namespace Amici.DataTranferObjects.Spatial 
+{
     public class Extent 
     {
         

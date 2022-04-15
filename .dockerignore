@@ -1,0 +1,6 @@
+SQL/
+.gitignore
+Readme.md
+bin/
+node_modules/
+obj/

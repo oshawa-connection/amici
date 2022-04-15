@@ -3,7 +3,8 @@ using System.Linq;
 using Amici.Interfaces;
 using NetTopologySuite.Features;
 
-namespace Amici.Extensions {
+namespace Amici.Extensions 
+{
     public static class ICollectionExtensions
     {
         public static FeatureCollection ToFeatureCollection(this ICollection<IToFeatureable> collection) 

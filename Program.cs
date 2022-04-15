@@ -9,7 +9,7 @@ using Microsoft.Extensions.Logging;
 using Npgsql;
 using NetTopologySuite;
 
-namespace amici
+namespace Amici
 {
     public class Program
     {

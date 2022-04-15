@@ -1,10 +1,11 @@
 using Amici.DatabaseTypes.Amici;
-using Amici.Interfaces;
+using Amici.Interfaces.Services;
 using System;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 
-namespace Amici.Services.Repositories {
+namespace Amici.Services.Repositories 
+{
 
     public interface IUserRepository :IRepository<AmiciUser,Guid>
     {
@@ -25,6 +26,7 @@ namespace Amici.Services.Repositories {
 
         public async Task<AmiciUser> GetValueByID(Guid id)
         {
+
             throw new NotImplementedException();
         }
     }
