@@ -7,15 +7,9 @@ using System.Collections.Generic;
 
 namespace Amici.Services.Repositories 
 {
-
-    // private class AmiciUserDB
-    // {
-    //     public object id 
-    // }
-
     public interface IUserRepository :IRepository<AmiciUser,Guid>
     {
-        public Task<NearbyUserSearchResult> GetNearbyUsers(Guid userID);
+        public Task<ICollection<NearbyUserSearchResult>> GetNearbyUsers(Guid userID, uint offset);
     }
 
     public class UserRepository: IUserRepository
@@ -26,9 +20,34 @@ namespace Amici.Services.Repositories
             this.npgsqlConnection = npgsqlConnection;
         }
 
-        public async Task<NearbyUserSearchResult> GetNearbyUsers(Guid userID)
+        public async Task<ICollection<NearbyUserSearchResult>> GetNearbyUsers(Guid userID, uint offset)
         {
-            throw new NotImplementedException();
+            var searchResult = new NearbyUserSearchResult();
+            try
+            {
+                await npgsqlConnection.OpenAsync();
+
+                var baseQuery = @"
+                WITH current_amici_user AS ( 
+                    SELECT id,geom FROM main.amici_user
+                    WHERE id = :userID
+                )
+                SELECT id,user_name,st_distance((SELECT ST_SnapToGrid(geom,100.0) FROM current_amici_user),ST_SnapToGrid(au.geom,100.0)) AS distance_from_current_user 
+                FROM main.amici_user au
+                WHERE au.id != (select id from current_amici_user)
+                ORDER BY (SELECT geom FROM current_amici_user) <-> au.geom OFFSET :offset LIMIT 10;";
+
+                using (var command = new NpgsqlCommand(baseQuery,this.npgsqlConnection))
+                {
+                    command.Parameters.AddWithValue("userID",userID.ToString());
+                    command.Parameters.AddWithValue("offset",offset);
+                    using (var reader = await command.ExecuteReaderAsync())
+                    {
+                        await reader.ReadAsync();
+                        
+                    }
+                }
+            }
         }
 
         public async Task<ICollection<AmiciUser>> GetValues()
