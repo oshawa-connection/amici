@@ -1,4 +1,5 @@
 const path = require('path');
+const { webpack } = require('webpack');
 
 const PRODUCTION = "production";
 const DEVELOPMENT = "development";
@@ -11,5 +12,5 @@ module.exports = {
   output: {
     filename: 'site.js',
     path: path.resolve(__dirname, 'wwwroot/js'),
-  },
+  }
 };
