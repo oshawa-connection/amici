@@ -9,3 +9,12 @@ export function getDomElementByIdNonNullable(id) {
     }
     return element;
 }
+
+/**
+ * 
+ * @param {number} distanceMetres 
+ * @returns 
+ */
+export function formatMetersDistance(distanceMetres) {
+    return `${Math.round(distanceMetres/1000)} Km away`;
+}

@@ -45,6 +45,10 @@ export class UserRepository {
         this.userID = userID;
     }
 
+    getCurrentUser() {
+        return this.currentSearchResults[this.currentSearchResultsIndex];
+    }
+
     getCurrentUserID() {
         return this.userID;
     }

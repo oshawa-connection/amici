@@ -2,6 +2,7 @@ import { AmiciAPI } from "./AmiciAPI";
 import { EventBus } from "./EventBus";
 import { GUID } from "./GUID";
 import { NewMatchDisplay } from "./NewMatchDisplay";
+import { PotentialFriendDisplay } from "./PotentialFriendDisplay";
 import { UserControlPanel } from "./UserControlPanel";
 import { UserRepository } from "./UserRepository";
 
@@ -15,6 +16,7 @@ const userID = new GUID("0b2d143f-3ba6-45ea-b095-d1e7e4ab3175");
     const eventBus = new EventBus();
     const swipePanel = new UserControlPanel(userRepository,eventBus);    
     const matchDisplay = new NewMatchDisplay();
+    const friendDisplay = new PotentialFriendDisplay(userRepository.getCurrentUser());
 })();
 
 
