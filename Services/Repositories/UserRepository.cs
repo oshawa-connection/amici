@@ -22,7 +22,7 @@ namespace Amici.Services.Repositories
 
         public async Task<ICollection<NearbyUserSearchResult>> GetNearbyUsers(Guid userID, uint offset)
         {
-            var searchResult = new NearbyUserSearchResult();
+            var searchResult = new List<NearbyUserSearchResult>();
             try
             {
                 await npgsqlConnection.OpenAsync();
@@ -30,7 +30,7 @@ namespace Amici.Services.Repositories
                 var baseQuery = @"
                 WITH current_amici_user AS ( 
                     SELECT id,geom FROM main.amici_user
-                    WHERE id = :userID
+                    WHERE id = :userID ::uuid
                 )
                 SELECT id,user_name,st_distance((SELECT ST_SnapToGrid(geom,100.0) FROM current_amici_user),ST_SnapToGrid(au.geom,100.0)) AS distance_from_current_user 
                 FROM main.amici_user au
@@ -40,14 +40,25 @@ namespace Amici.Services.Repositories
                 using (var command = new NpgsqlCommand(baseQuery,this.npgsqlConnection))
                 {
                     command.Parameters.AddWithValue("userID",userID.ToString());
-                    command.Parameters.AddWithValue("offset",offset);
+                    command.Parameters.AddWithValue("offset",(int)offset);
                     using (var reader = await command.ExecuteReaderAsync())
                     {
-                        await reader.ReadAsync();
-                        
+                        while(await reader.ReadAsync())
+                        {
+                            var nearbyUser = new NearbyUserSearchResult();
+                            nearbyUser.Id = reader.GetGuid(0);
+                            nearbyUser.UserName = reader.GetString(1);
+                            nearbyUser.DistanceFromCurrentUser = reader.GetDouble(2);
+                            searchResult.Add(nearbyUser);
+                        }
                     }
                 }
+            } 
+            finally 
+            {
+                await npgsqlConnection.CloseAsync();
             }
+            return searchResult;
         }
 
         public async Task<ICollection<AmiciUser>> GetValues()
