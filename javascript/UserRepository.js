@@ -1,6 +1,11 @@
 import { AmiciAPI } from "./AmiciAPI";
 import { GUID } from "./GUID";
 
+/**
+ * A more high level wrapper for the search nearby users API.
+ * Be sure to call `initialise` to perform the initial fetch of users 
+ * This cannot be done in the ctor as ctor's cannot be async.
+ */
 export class UserRepository {
     /**
      * @private
@@ -94,7 +99,6 @@ export class UserRepository {
      */
     doUsersMatch() {
         const result = (Math.floor(Math.random() * 2) == 0)
-        console.log(result);
         return result;
     }
 }

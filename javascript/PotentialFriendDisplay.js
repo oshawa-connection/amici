@@ -1,6 +1,10 @@
 import { EventBus } from "./EventBus";
 import { formatMetersDistance, getDomElementByIdNonNullable } from "./Utils";
 
+/**
+ * Displays the user image, distance and user name, and switches them out 
+ * when the current friend changes.
+ */
 export class PotentialFriendDisplay {
     /**
      * @readonly
@@ -35,6 +39,15 @@ export class PotentialFriendDisplay {
         document.addEventListener(EventBus.displayNextFriend,this.onNextUser.bind(this));
 
         this.setCurrentUser(currentUser);
+
+
+
+    }
+
+    onError() {
+        let image = new Image();
+        image.src=`${this.imageBaseURL}/placeholder.png`
+        this.currentPotentialFriendImageElement.replaceWith(image);
     }
 
     /**
@@ -56,10 +69,10 @@ export class PotentialFriendDisplay {
      * @param {import("./types").NearbyUser} nextFriend 
      */
     setCurrentUser(nextFriend) {
-        var source = `${this.imageBaseURL}/${nextFriend.avatarURI}.png`;
+        let source = `${this.imageBaseURL}/${nextFriend.avatarURI}.png`;
         
-        var timestamp = (new Date()).getTime()
-        var newUrl = source + '?_=' + timestamp;
+        let timestamp = (new Date()).getTime()
+        let newUrl = source + '?_=' + timestamp;
         this.currentPotentialFriendImageElement.src = newUrl
         
         this.currentPotentialFriendNameParagraph.innerText = `${nextFriend.userName}, ${formatMetersDistance(nextFriend.distanceFromCurrentUser)}`;

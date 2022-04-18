@@ -5,6 +5,7 @@ using System.Threading;
 
 namespace Amici.HealthChecks
 {
+    // Checks that the connection to the database is good.
     public class AmiciDatabaseHealthCheck : IHealthCheck
     {
         private readonly NpgsqlConnection NpgsqlConnection;
@@ -12,7 +13,7 @@ namespace Amici.HealthChecks
         {
             this.NpgsqlConnection = npgsqlConnection;
         }
-        // This method is allowed to throw
+        
         public Task<HealthCheckResult> CheckHealthAsync(HealthCheckContext context, CancellationToken cancellationToken = default)
         {
             var isHealthy = false;
@@ -27,7 +28,7 @@ namespace Amici.HealthChecks
             }
             finally 
             {
-                this.NpgsqlConnection.Close();
+                this.NpgsqlConnection.Close(); // This method is allowed to throw, but it must close the connection!
             }
 
             if (isHealthy)

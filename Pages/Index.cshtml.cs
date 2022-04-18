@@ -7,13 +7,13 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
-
+using Amici.DataTranferObjects.Amici;
 
 namespace amici.Pages
 {
     public class IndexModel : PageModel
     {
-        public AmiciUser currentUser;
+        public AmiciUserDTO currentUser;
         private readonly Guid FakeUserID = new Guid("0b2d143f-3ba6-45ea-b095-d1e7e4ab3175");
         private readonly ILogger<IndexModel> _logger;
         private readonly IUserRepository userRepository;
@@ -25,7 +25,8 @@ namespace amici.Pages
 
         public async Task OnGetAsync()
         {
-            currentUser = await userRepository.GetValueByID(this.FakeUserID);
+            var currentUser = await userRepository.GetValueByID(this.FakeUserID);
+            this.currentUser = currentUser.ToDTO();
         }
     }
 }

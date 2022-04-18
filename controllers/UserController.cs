@@ -3,11 +3,10 @@ using Microsoft.AspNetCore.Identity;
 using System;
 using Amici.Services.Repositories;
 using System.Threading.Tasks;
+using System.Linq;
 
 namespace Amici.Controllers
 {
-    // In reality, this would be an override of the 
-    // identity framework user.
     [Route("api/[controller]")]
     public class UserController : ControllerBase
     {
@@ -15,10 +14,10 @@ namespace Amici.Controllers
         public UserController(IUserRepository userRepository)
         {
 
-            this.userRepository=  userRepository;
+            this.userRepository = userRepository;
         }
 
-        // In reality, we wouldn't pass the userID here; we'd 
+        // In reality, we wouldn't pass the userID here; we'd get it using identity
         [HttpGet("nearbyusers/{userID}/{offset}")]
         public async Task<IActionResult> GetNearbyUsers(string userID,int offset)
         {
@@ -32,12 +31,12 @@ namespace Amici.Controllers
             {
                 parsedUserID = Guid.Parse(userID);
             } catch (FormatException x) {
-                return new BadRequestResult();
+                return BadRequest("Invalid user ID");
             }
             
             var searchResult = await userRepository.GetNearbyUsers(parsedUserID,castOffset);
-            // Hardcoded user ID here because no identity framework
-            return new JsonResult(searchResult);
+            var searchResultDTOs = searchResult.Select(d => d.ToDTO()).ToList();
+            return new JsonResult(searchResultDTOs);
         }
     }    
 }

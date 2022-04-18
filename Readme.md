@@ -16,11 +16,15 @@ A few reasons:
 This is the perfect use case for a multi-page application. SPA's are better suited to apps with a large number of pages, 
 with lots of developers working on them.
 2. I can write non-SPA apps about 3 times faster.
-3. SPA's are more complex to get authentication working correctly for.
+3. SPA's are more complex to get authentication working correctly for and deploy correctly and should be avoided unless necessary.
 
 ### Why didn't you use TypeScript?
 
-I love TypeScript, but not everyone feels this way. Writing in JS with JSDoc + a jsconfig.json file gives _most_ of the benefits of TS while allowing other developers, who might not like TS, to contribute to the app.
+I love TypeScript, but not everyone feels this way. Writing in JS with types/ annotations in JSDoc + a jsconfig.json file gives _most_ of the benefits of TS while allowing other developers, who might not like TS, to contribute to the app.
+
+### Testing
+
+In a production app, I add tests to the JavaScript for the front-end, and potentially add some integration/ e2e tests for the back-end to make sure that the correct data is being pulled through from the database to the API.
 
 ## Security
 
@@ -29,7 +33,19 @@ This is a demo app, I didn't use identity framework so there is no authenticatio
 However, one interesting thing I did implement is protection from finding the exact location of the user, as described here:
 https://robertheaton.com/bumble-vulnerability/
 
-The password as: AMICI_DB_PASSWORD
-The username as: AMICI_DB_USERNAME
+### Environment variables
 
-During development, use dotnet user-secrets.
+Set the following environment variables or dotnet user-secrets:
+
+The password as a variable called: AMICI_DB_PASSWORD
+The username as a variable called: AMICI_DB_USERNAME
+
+
+## Improvements
+
+Things that could be done better:
+1. Some apsects of the UI could be done better if they used the state pattern.
+2. The UI is ugly as sin and only works on mobile.
+3. Error handling in general
+4. Better validation of route parameters
+5. Dockerfile does not install node and build with node_env=PRODUCTION.

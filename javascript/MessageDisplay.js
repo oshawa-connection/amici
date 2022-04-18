@@ -1,6 +1,12 @@
 import { EventBus } from "./EventBus";
 
-export class NewMatchDisplay {
+/**
+ * Listens for events from the app and displays messages to the user.
+ * Right now this is just an alert, but in future it could be a modal, toast or
+ * something else.
+ * 
+ */
+export class MessageDisplay {
 
     /**
      * @private
@@ -24,15 +30,15 @@ export class NewMatchDisplay {
 
 
     /**
-     * @type {undefined | NewMatchDisplay}
+     * @type {undefined | MessageDisplay}
      */
      static instance = undefined;
 
      constructor() {
-        if (NewMatchDisplay.instance !== undefined) {
+        if (MessageDisplay.instance !== undefined) {
             throw new Error("NewMatchDisplay is a singleton");
         }
-        NewMatchDisplay.instance = this;
+        MessageDisplay.instance = this;
         document.addEventListener(EventBus.displayMatchSuccess,this.onNewMatch.bind(this));
         document.addEventListener(EventBus.displayNoMoreFriends,this.onNoMoreFriends.bind(this));
     }    

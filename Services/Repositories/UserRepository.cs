@@ -73,7 +73,12 @@ namespace Amici.Services.Repositories
             {
                 await npgsqlConnection.OpenAsync();
                 
-                using (var command = new NpgsqlCommand("SELECT id,user_name FROM main.amici_user WHERE id = :value1 ::uuid",this.npgsqlConnection))
+                var baseQuery = @"
+                SELECT id,user_name 
+                FROM main.amici_user 
+                WHERE id = :value1 ::uuid";
+
+                using (var command = new NpgsqlCommand(baseQuery,this.npgsqlConnection))
                 {
                     command.Parameters.AddWithValue("value1",id.ToString());
                     using (var reader = await command.ExecuteReaderAsync())

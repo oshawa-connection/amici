@@ -2,6 +2,12 @@ import { EventBus } from "./EventBus";
 import { UserRepository } from "./UserRepository";
 import { getDomElementByIdNonNullable } from "./Utils";
 
+/**
+ * Listens and responds to events from the two buttons on the main page.
+ * 
+ * Possibly this could benefit from the state pattern. E.g. LoadingState, EnabledState, WaitingState, ErrorState etc.
+ * Needs some thought.
+ */
 export class UserControlPanel {
     /**
      * @private
@@ -75,6 +81,8 @@ export class UserControlPanel {
         if (nextUser === undefined) {
             this.eventBus.displayNoMoreFriends();
             this.onNoMoreFriends();
+            this.eventBus.displayError();
+            return;
         }
         this.eventBus.displayNextFriend(nextUser);
         this.isProcessing = false;
@@ -90,6 +98,8 @@ export class UserControlPanel {
         if (nextUser === undefined) {
             this.eventBus.displayNoMoreFriends();
             this.onNoMoreFriends();
+            this.eventBus.displayError();
+            return;
         }
         this.eventBus.displayNextFriend(nextUser);
         this.isProcessing = false;

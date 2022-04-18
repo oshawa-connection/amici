@@ -1,5 +1,6 @@
 /**
- * 
+ * Utility method to throw error when a DOM element that is essential isn't there
+ * Also prevents TS from complaining about possible null values.
  * @param {string} id 
  */
 export function getDomElementByIdNonNullable(id) {

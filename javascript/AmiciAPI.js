@@ -1,6 +1,10 @@
 import { GUID } from "./GUID";
 
-
+/**
+ * Low level wrapper for the App's API.
+ * Makes testing easier as now we don't have to mock fetch or http results in other components during tests.
+ * This is possible using sinon but its a lot of setup.
+ */
 export class AmiciAPI {
     
     /**

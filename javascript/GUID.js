@@ -1,3 +1,6 @@
+/**
+ * Dumb GUID data structure that validates GUIDs to narrow down passing strings around.
+ */
 export class GUID {
     /**
      * @private
