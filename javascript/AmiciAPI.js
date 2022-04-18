@@ -7,7 +7,7 @@ export class AmiciAPI {
      * @private
      * @readonly
      */
-    usersAPIBaseURL = "/api/users";
+    usersAPIBaseURL = "/api/user";
 
     /**
      * @param {GUID} userId

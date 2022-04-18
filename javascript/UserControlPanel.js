@@ -1,3 +1,4 @@
+import { EventBus } from "./EventBus";
 import { UserRepository } from "./UserRepository";
 import { getDomElementByIdNonNullable } from "./Utils";
 
@@ -29,8 +30,9 @@ export class UserControlPanel {
     /**
      * 
      * @param {UserRepository} userRepository 
+     * @param {EventBus} eventBus
      */
-    constructor(userRepository) {
+    constructor(userRepository, eventBus) {
         if (UserControlPanel.instance !== undefined) {
             throw new Error("Swipepanel is a singleton");
         }
@@ -41,20 +43,25 @@ export class UserControlPanel {
         this.yesButton.addEventListener("click",this.onYesButton.bind(this));
         this.noButton.addEventListener("click",this.onNoButton.bind(this));
 
+        // document.addEventListener(EventBus.displayNoMoreFriends,this.onNoMoreFriends.bind(this));
+        /**
+         * @private
+         * @readonly
+         */
         this.userRepository = userRepository;
+        /**
+         * @private
+         * @readonly
+         */
+        this.eventBus = eventBus;
     }
 
 
-    /**
-     * Potentially, this could be done by _another_ class called "event bus"
-     * @private
-     */
-    async displayNextFriend() {
-        const nextUser = await this.userRepository.goToNextUser();
-        document.dispatchEvent(new CustomEvent("displayNextFriend",{detail:nextUser}));
+    onNoMoreFriends() {
+        this.noButton.disabled = true;
+        this.yesButton.disabled = true;
     }
 
-    
 
     async onYesButton() {
         if (this.isProcessing === true) {
@@ -62,9 +69,14 @@ export class UserControlPanel {
         }
         this.isProcessing = true;
         if (this.userRepository.doUsersMatch()) {
-
+            this.eventBus.displayMatchSuccess();
         }
-        await this.displayNextFriend();        
+        const nextUser = await this.userRepository.goToNextUser();
+        if (nextUser === undefined) {
+            this.eventBus.displayNoMoreFriends();
+            this.onNoMoreFriends();
+        }
+        this.eventBus.displayNextFriend(nextUser);
         this.isProcessing = false;
     }
 
@@ -74,9 +86,12 @@ export class UserControlPanel {
         }
         this.isProcessing = true;
 
-        await this.displayNextFriend();
-        
-        
+        const nextUser = await this.userRepository.goToNextUser();
+        if (nextUser === undefined) {
+            this.eventBus.displayNoMoreFriends();
+            this.onNoMoreFriends();
+        }
+        this.eventBus.displayNextFriend(nextUser);
         this.isProcessing = false;
     }
 

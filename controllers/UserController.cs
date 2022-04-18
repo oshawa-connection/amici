@@ -19,7 +19,7 @@ namespace Amici.Controllers
         }
 
         // In reality, we wouldn't pass the userID here; we'd 
-        [HttpGet("getnearbyusers/{userID}/{offset}")]
+        [HttpGet("nearbyusers/{userID}/{offset}")]
         public async Task<IActionResult> GetNearbyUsers(string userID,int offset)
         {
             if (offset < 0) 

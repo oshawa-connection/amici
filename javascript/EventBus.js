@@ -1,8 +1,11 @@
+/**
+ * 
+ */
 export class EventBus {
 
     static displayNextFriend = "displayNextFriend";
     static displayMatchSuccess = "displayMatchSuccess";
-
+    static displayNoMoreFriends = "displayNoMoreFriends";
     /**
      * 
      * @param {import("./types").NearbyUser} nextUser
@@ -14,5 +17,9 @@ export class EventBus {
     
     displayMatchSuccess() {
         document.dispatchEvent(new CustomEvent(EventBus.displayMatchSuccess));
+    }
+
+    displayNoMoreFriends() {
+        document.dispatchEvent(new CustomEvent(EventBus.displayNoMoreFriends));
     }
 }

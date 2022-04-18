@@ -18,6 +18,10 @@ with lots of developers working on them.
 2. I can write non-SPA apps about 3 times faster.
 3. SPA's are more complex to get authentication working correctly for.
 
+### Why didn't you use TypeScript?
+
+I love TypeScript, but not everyone feels this way. Writing in JS with JSDoc + a jsconfig.json file gives _most_ of the benefits of TS while allowing other developers, who might not like TS, to contribute to the app.
+
 ## Security
 
 This is a demo app, I didn't use identity framework so there is no authentication/ authorisation.

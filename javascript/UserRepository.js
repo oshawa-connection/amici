@@ -76,7 +76,7 @@ export class UserRepository {
      */
     async goToNextUser() {
         this.currentSearchResultsIndex += 1;
-        if (this.currentSearchResultsIndex > this.currentSearchResults.length) {
+        if (this.currentSearchResultsIndex > this.currentSearchResults.length - 1) {
             await this.fetchSearchResults(this.userID);
         } 
 
@@ -89,6 +89,8 @@ export class UserRepository {
      * @returns 
      */
     doUsersMatch() {
-        return (Math.floor(Math.random() * 2) == 0);
+        const result = (Math.floor(Math.random() * 2) == 0)
+        console.log(result);
+        return result;
     }
 }

@@ -8,9 +8,21 @@ export class NewMatchDisplay {
      */
     newMatchMessage = "Congrats! You found a new friend :)";
 
+    /**
+     * @private
+     * @readonly
+     */
+    noMoreFriendsMessage = "Sorry! There are no more people in your area with similar interests.";
+
     onNewMatch() {
         alert(this.newMatchMessage)
     }
+
+    onNoMoreFriends() {
+        alert(this.noMoreFriendsMessage);
+    }
+
+
     /**
      * @type {undefined | NewMatchDisplay}
      */
@@ -18,9 +30,10 @@ export class NewMatchDisplay {
 
      constructor() {
         if (NewMatchDisplay.instance !== undefined) {
-            throw new Error("Swipepanel is a singleton");
+            throw new Error("NewMatchDisplay is a singleton");
         }
         NewMatchDisplay.instance = this;
         document.addEventListener(EventBus.displayMatchSuccess,this.onNewMatch.bind(this));
+        document.addEventListener(EventBus.displayNoMoreFriends,this.onNoMoreFriends.bind(this));
     }    
 }
