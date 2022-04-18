@@ -19,9 +19,14 @@ namespace Amici.Controllers
         }
 
         // In reality, we wouldn't pass the userID here; we'd 
-        [HttpGet("GetNearbyUsers/{userID}/{distanceKilometers:double}")]
-        public async Task<IActionResult> GetNearbyUsers(string userID,double distanceKilometers)
+        [HttpGet("getnearbyusers/{userID}/{offset}")]
+        public async Task<IActionResult> GetNearbyUsers(string userID,int offset)
         {
+            if (offset < 0) 
+            {
+                return BadRequest("Offset must be greater than or equal to 0");
+            }
+            var castOffset = (uint) offset;
             Guid parsedUserID;
             try
             {
@@ -30,9 +35,9 @@ namespace Amici.Controllers
                 return new BadRequestResult();
             }
             
-            await userRepository.GetNearbyUsers(parsedUserID);
+            var searchResult = await userRepository.GetNearbyUsers(parsedUserID,castOffset);
             // Hardcoded user ID here because no identity framework
-            return new JsonResult(user.ToDTO());
+            return new JsonResult(searchResult);
         }
     }    
 }
