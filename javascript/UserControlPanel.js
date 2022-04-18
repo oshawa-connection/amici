@@ -1,6 +1,7 @@
+import { UserRepository } from "./UserRepository";
 import { getDomElementByIdNonNullable } from "./Utils";
 
-export class SwipePanel {
+export class UserControlPanel {
     /**
      * @private
      */
@@ -20,40 +21,61 @@ export class SwipePanel {
 
 
     /**
-     * @type {undefined | SwipePanel}
+     * @private
+     * @type {undefined | UserControlPanel}
      */
     static instance = undefined;
 
-    constructor() {
-        if (SwipePanel.instance !== undefined) {
+    /**
+     * 
+     * @param {UserRepository} userRepository 
+     */
+    constructor(userRepository) {
+        if (UserControlPanel.instance !== undefined) {
             throw new Error("Swipepanel is a singleton");
         }
-        SwipePanel.instance = this;
+        UserControlPanel.instance = this;
         this.yesButton = (/** @type {HTMLButtonElement} */ (getDomElementByIdNonNullable(this.yesButtonID)));
         this.noButton = (/** @type {HTMLButtonElement} */ (getDomElementByIdNonNullable(this.noButtonID)));
 
         this.yesButton.addEventListener("click",this.onYesButton.bind(this));
         this.noButton.addEventListener("click",this.onNoButton.bind(this));
+
+        this.userRepository = userRepository;
     }
 
-    onYesButton() {
+
+    /**
+     * Potentially, this could be done by _another_ class called "event bus"
+     * @private
+     */
+    async displayNextFriend() {
+        const nextUser = await this.userRepository.goToNextUser();
+        document.dispatchEvent(new CustomEvent("displayNextFriend",{detail:nextUser}));
+    }
+
+    
+
+    async onYesButton() {
         if (this.isProcessing === true) {
             return;
         }
         this.isProcessing = true;
+        if (this.userRepository.doUsersMatch()) {
 
-
-
+        }
+        await this.displayNextFriend();        
         this.isProcessing = false;
     }
 
-    onNoButton() {
+    async onNoButton() {
         if (this.isProcessing === true) {
             return;
         }
         this.isProcessing = true;
 
-
+        await this.displayNextFriend();
+        
         
         this.isProcessing = false;
     }
