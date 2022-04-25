@@ -1,6 +1,8 @@
 # Amici
 
-Like Tinder, but for finding friends with similar interests!
+Like Tinder, but for finding friends with similar interests! Note that I only made the UI for mobile, it looks horrible on desktop.
+
+[Screenshot of mobile app](ReadMeImages/mainapp.png)
 
 ## What is this app built with?
 
@@ -24,7 +26,7 @@ I love TypeScript, but not everyone feels this way. Writing in JS with types/ an
 
 ### Testing
 
-In a production app, I add tests to the JavaScript for the front-end, and potentially add some integration/ e2e tests for the back-end to make sure that the correct data is being pulled through from the database to the API.
+In a production app, I would add tests to the JavaScript for the front-end, and potentially add some integration/ e2e tests for the back-end to make sure that the correct data is being pulled through from the database to the API.
 
 ## Security
 
@@ -46,6 +48,6 @@ The username as a variable called: AMICI_DB_USERNAME
 Things that could be done better:
 1. Some apsects of the UI could be done better if they used the state pattern.
 2. The UI is ugly as sin and only works on mobile.
-3. Error handling in general
+3. Error handling in general. E.g. displaying a placeholder image if one cannot be loaded.
 4. Better validation of route parameters
 5. Dockerfile does not install node and build with node_env=PRODUCTION.
