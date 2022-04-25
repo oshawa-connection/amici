@@ -2,7 +2,7 @@
 
 Like Tinder, but for finding friends with similar interests! Note that I only made the UI for mobile, it looks horrible on desktop.
 
-[Screenshot of mobile app](ReadMeImages/mainapp.png)
+![Screenshot of mobile app](https://github.com/oshawa-connection/amici/blob/develop/ReadMeImages/mainapp.png)
 
 ## What is this app built with?
 
